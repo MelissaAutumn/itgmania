@@ -24,7 +24,12 @@
 
 #elif defined(UNIX)
 #include "ArchHooks/ArchHooks_Unix.h"
+
+#if defined(WITH_SDL3)
+#include "LowLevelWindow/LowLevelWindow_SDL.h"
+#else
 #include "LowLevelWindow/LowLevelWindow_X11.h"
+#endif
 
 #if defined(LINUX)
 #include "MemoryCard/MemoryCardDriverThreaded_Linux.h"
@@ -38,6 +43,12 @@
 #else
 #define DEFAULT_INPUT_DRIVER_LIST "X11"
 #endif
+
+#if defined(WITH_SDL3)
+#undef DEFAULT_INPUT_DRIVER_LIST
+#define DEFAULT_INPUT_DRIVER_LIST "sdl"
+#endif
+
 #define DEFAULT_MOVIE_DRIVER_LIST "FFMpeg,Null"
 // ALSA comes first, as the system may have OSS compat but we don't want to use
 // it if it's actually an ALSA wrapper.
